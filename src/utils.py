@@ -14,7 +14,9 @@ def get_auth() -> requests.auth.HTTPDigestAuth:
     serial = os.getenv("THETA_SERIAL")
     if not serial:
         raise ValueError("THETA_SERIAL is not set in .env")
-    return requests.auth.HTTPDigestAuth(serial, serial)
+    password = os.getenv("THETA_PASSWORD", serial)
+    username = f"THETA{serial}"
+    return requests.auth.HTTPDigestAuth(username, password)
 
 
 def camera_request(command: str, params: dict = None) -> requests.Response:
